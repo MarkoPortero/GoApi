@@ -25,9 +25,6 @@ var marksToDoItems []ToDo = []ToDo{}
 type TodoItems []ToDo
 
 func getAllItems(w http.ResponseWriter, r *http.Request) {
-	// todoitems := marksToDoItems{
-	// 	ToDo{Item: "GO Rest API", Description: "Make a Go Rest API you lazy manchild", Complete: false, DueDate: time.Now()},
-	// }
 	fmt.Println("Todo items")
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(marksToDoItems)
@@ -35,7 +32,6 @@ func getAllItems(w http.ResponseWriter, r *http.Request) {
 
 func postTodoItems(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Post worked bro")
-
 	decoder := json.NewDecoder(r.Body)
 	var t ToDo
 	err := decoder.Decode(&t)
@@ -47,12 +43,11 @@ func postTodoItems(w http.ResponseWriter, r *http.Request) {
 }
 
 func homePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome to the HomePage!")
-	fmt.Println("Endpoint Hit: homePage")
+	fmt.Fprintf(w, "Is this not the greatest homepage?")
 }
 
 func handleRequests() {
-	//mux allows much easier verb usage i.e. Methods("GET")
+	//note: mux allows much easier verb usage i.e. Methods("GET")
 	myRouter := mux.NewRouter().StrictSlash(true)
 
 	myRouter.HandleFunc("/home", homePage)
