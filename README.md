@@ -1,2 +1,2 @@
 # GoApi
-Simple API in Go
+Simple API in Go!
