@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/gorilla/mux"
 )
 
 //ToDo struct
@@ -27,15 +29,24 @@ func getAllItems(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(todoitems)
 }
 
+func postTodoItems(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Post worked bro")
+}
+
 func homePage(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Welcome to the HomePage!")
 	fmt.Println("Endpoint Hit: homePage")
 }
 
 func handleRequests() {
-	http.HandleFunc("/home", homePage)
-	http.HandleFunc("/todoitems", getAllItems)
-	log.Fatal(http.ListenAndServe(":10000", nil))
+	//mux allows much easier verb usage i.e. Methods("GET")
+	myRouter := mux.NewRouter().StrictSlash(true)
+
+	myRouter.HandleFunc("/home", homePage)
+	myRouter.HandleFunc("/todoitems", getAllItems).Methods("GET")
+	myRouter.HandleFunc("/todoitems", postTodoItems).Methods("POST")
+
+	log.Fatal(http.ListenAndServe(":10000", myRouter))
 }
 
 func main() {
