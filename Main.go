@@ -18,19 +18,32 @@ type ToDo struct {
 	DueDate     time.Time `json:"DueDate"`
 }
 
+//new string slice composite literal
+var marksToDoItems []ToDo = []ToDo{}
+
 //TodoItems array of things to do
 type TodoItems []ToDo
 
 func getAllItems(w http.ResponseWriter, r *http.Request) {
-	todoitems := TodoItems{
-		ToDo{Item: "GO Rest API", Description: "Make a Go Rest API you lazy manchild", Complete: false, DueDate: time.Now()},
-	}
+	// todoitems := marksToDoItems{
+	// 	ToDo{Item: "GO Rest API", Description: "Make a Go Rest API you lazy manchild", Complete: false, DueDate: time.Now()},
+	// }
 	fmt.Println("Todo items")
-	json.NewEncoder(w).Encode(todoitems)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(marksToDoItems)
 }
 
 func postTodoItems(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Post worked bro")
+
+	decoder := json.NewDecoder(r.Body)
+	var t ToDo
+	err := decoder.Decode(&t)
+	marksToDoItems = append(marksToDoItems, t)
+	if err != nil {
+		panic(err)
+	}
+	log.Println(t)
 }
 
 func homePage(w http.ResponseWriter, r *http.Request) {
